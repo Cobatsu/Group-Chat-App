@@ -15,7 +15,7 @@ mongoose.connect(_Url,{ useUnifiedTopology: true,useNewUrlParser: true })
 async function startApolloServer() {
     const server = new ApolloServer( { schema , 
         subscriptions: {
-                path: '/subscriptions',
+                path: PORT + '/subscriptions',
         },
         context:async ( { req , connection } )=>{
         if(connection) {
