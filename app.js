@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 const schema = require('./GraphqlSchemas/ChatGraphqlSchema/index')
 const jwt = require('jsonwebtoken');
+const path = require('path');
 const express = require('express');
 const { ApolloServer} = require('apollo-server-express');
 require('dotenv').config();
