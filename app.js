@@ -15,7 +15,7 @@ mongoose.connect(_Url,{ useUnifiedTopology: true,useNewUrlParser: true })
 async function startApolloServer() {
     const server = new ApolloServer( { schema , 
         subscriptions: {
-                path: PORT + '/subscriptions',
+                path: "wss://groupchattappp.herokuapp.com/subscriptions",
         },
         context:async ( { req , connection } )=>{
         if(connection) {
