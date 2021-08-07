@@ -15,7 +15,7 @@ mongoose.connect(_Url,{ useUnifiedTopology: true,useNewUrlParser: true })
 async function startApolloServer() {
     const server = new ApolloServer( { schema , 
         subscriptions: {
-                path: '/subscriptions',
+                path: process.env.PORT+'/subscriptions',
         },
         context:async ( { req , connection } )=>{
         if(connection) {
@@ -42,7 +42,6 @@ async function startApolloServer() {
 
     server.applyMiddleware({ app });
     await new Promise(resolve => app.listen({ port: PORT }, resolve));
-    console.log(`🚀 Server ready at http://localhost:8000${server.graphqlPath}`);
     return { server, app };
   }
 
