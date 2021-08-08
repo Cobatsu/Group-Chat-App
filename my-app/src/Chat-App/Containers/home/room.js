@@ -225,7 +225,7 @@ const RepliedMessageTextBubble = styled.div`
     padding:20px 10px 4px 10px;
     border-radius:5px;
     max-width:35%;
-    min-width:80px;
+    min-width:93px;
     white-space:normal;
     display:flex;
     position:relative;
