@@ -36,7 +36,7 @@ const wsLink = new WebSocketLink({
     connectionParams:{
       token:localStorage.getItem('token'),
     },
-    timeout: 30000,
+    timeout: 60000,
   }
 });
 
