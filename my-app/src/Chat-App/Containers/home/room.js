@@ -225,7 +225,7 @@ const RepliedMessageTextBubble = styled.div`
     padding:20px 10px 4px 10px;
     border-radius:5px;
     max-width:35%;
-    min-width:66px;
+    min-width:80px;
     white-space:normal;
     display:flex;
     position:relative;
@@ -445,7 +445,7 @@ const Room = ({match})=>{
                                                 msg.repliedMessage &&  <RepliedMessageTextBubble>  
                                                     <RepliedMessageInfo color={memberColors[data?.getChatRoom.members.findIndex((m)=> m._id == msg.repliedMessage.owner._id)]} style={{top:4,left:4}}>
                                                         <i  className="fas fa-user"/>
-                                                        <span>
+                                                        <span  style={{marginLeft:3}}>
                                                         { msg.repliedMessage.owner.username }
                                                         </span>               
                                                         <span style={{marginLeft:3,color:"#628395"}}>
