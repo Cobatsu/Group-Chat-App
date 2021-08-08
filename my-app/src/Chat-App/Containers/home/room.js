@@ -69,7 +69,7 @@ const ChatTextInput = styled.input`
     flex:0.83;
     height:30px;
     font-size:17px;
-    background:#6f9eaf;
+    background:#628395;
     color:white;
     border:none;
     padding:5px 10px;
@@ -133,9 +133,9 @@ const InnerMessage = styled.li`
 `
 
 const TextBubble = styled.div`
- background: #6f9eaf;
+ background: #628395;
  color:white;
- padding:6px;
+ padding:6px 8px;
  border-radius:5px;
  max-width:35%;
  white-space:normal;
@@ -186,7 +186,7 @@ const ReplyWrapper = styled.div`
         border-radius:7px;
         position:relative;  
         display:flex;
-        background:#e5ddd5;
+        background:#242c37;
         justify-content:space-between;
         align-items:center;
         margin-bottom:5px;
@@ -195,7 +195,7 @@ const ReplyWrapper = styled.div`
 const ReplyText = styled.div`
         height:100%;
         width:100%;
-        color:rgba(0, 0, 0, 0.6);
+        color:white;
         box-sizing: border-box;
         display:flex;
         align-items:center;
@@ -205,12 +205,22 @@ const ReplyText = styled.div`
         white-space:normal;
 `
 const RepliedMessageInfo = styled.div`
+        display:flex;
+        width:100%;
+        justify-content:space-between;
+        margin-bottom:5px;
+        color:${({color})=>color};
+        font-size:11px;
+`
+
+const RepliedMessageInfo2 = styled.div`
         position:absolute;
         color:${({color})=>color};
         top:8px;
         left:8px;
         font-size:11px;
 `
+
 const ReplyCloseIcon = styled.div`
     font-size:20px;
     &:hover{
@@ -220,21 +230,21 @@ const ReplyCloseIcon = styled.div`
     margin-right:20px;
 `
 const RepliedMessageTextBubble = styled.div`
-    background:#e5ddd5;
+    background:#323d4d;
     color:white;
-    padding:20px 10px 4px 10px;
     border-radius:5px;
     max-width:35%;
     min-width:93px;
     white-space:normal;
     display:flex;
     position:relative;
-    align-items:center;
+    display:flex;
+    padding:10px;
+    flex-direction:column;
     overflow-wrap: break-word;
     margin-right:4px;
     margin-left:4px;
     font-size:14px;
-    color:rgba(0, 0, 0, 0.6);
 `
 
 
@@ -437,24 +447,26 @@ const Room = ({match})=>{
                                         <InnerMessage key={index} checkOwner={ msg.owner._id == currentUser._id } > {/* row-reverse also reverses the end and start property */}
                                             <TextInformationBubble memberColor = {memberColors[
                                                 data.getChatRoom.members.findIndex((m)=> m._id == msg.owner._id)
-                                            ]} >
+                                            ] || '#87A8A4'} >
                                                 <span style={{fontSize:12}} > <i  className="fas fa-user"/> {msg.owner.username}  </span>
                                                 <span style={{color:"#628395"}}>  {msg.date} </span>
                                             </TextInformationBubble> 
                                             {
                                                 msg.repliedMessage &&  <RepliedMessageTextBubble>  
-                                                    <RepliedMessageInfo color={memberColors[data?.getChatRoom.members.findIndex((m)=> m._id == msg.repliedMessage.owner._id)]} style={{top:4,left:4}}>
-                                                        <i  className="fas fa-user"/>
-                                                        <span  style={{marginLeft:3}}>
-                                                        { msg.repliedMessage.owner.username }
-                                                        </span>               
+
+                                                    <RepliedMessageInfo color={memberColors[data?.getChatRoom.members.findIndex((m)=> m._id == msg.repliedMessage.owner._id)] || '#87A8A4'} style={{top:4,left:4}}>  
+                                                        <span  style={{marginRight:3}}>
+                                                            <i  className="fas fa-user"  style={{marginRight:3}}/>
+                                                            { msg.repliedMessage.owner.username }
+                                                        </span>  
+
                                                         <span style={{marginLeft:3,color:"#628395"}}>
-                                                        { msg.repliedMessage.date }
+                                                            { msg.repliedMessage.date }
                                                         </span>
                                                     </RepliedMessageInfo>
-                                                    {
-                                                        msg.repliedMessage.text
-                                                    }
+                                                    <span>
+                                                            {   msg.repliedMessage.text }
+                                                    </span>
                                                 </RepliedMessageTextBubble> 
                                             }                                                                                                                       
                                             <TextBubble>  
@@ -494,15 +506,15 @@ const Room = ({match})=>{
                         }
                      </Messages> }
                     <ReplyWrapper isReplied={isReplied}>
-                            <RepliedMessageInfo color={memberColors[data?.getChatRoom.members.findIndex((m)=> m._id == isReplied?.owner._id)]}>
+                            <RepliedMessageInfo2 color={memberColors[data?.getChatRoom.members.findIndex((m)=> m._id == isReplied?.owner._id)] || '#87A8A4'}>
                                         <i  className="fas fa-user"/>
-                                        <span>
+                                        <span style={{marginLeft:4}}>
                                         { isReplied?.owner.username }
                                         </span>               
                                         <span style={{marginLeft:8,color:"#628395"}}>
                                         { isReplied?.date }
                                         </span>
-                            </RepliedMessageInfo>
+                            </RepliedMessageInfo2>
                             <ReplyText>
                                         { isReplied?.text }
                             </ReplyText>
