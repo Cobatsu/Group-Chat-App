@@ -20,26 +20,16 @@ width:100%;
 const InputBox = styled.input` margin-bottom:10px `
 
 const RegisterPage = ( props )=>{
-
     const history = useHistory();
     const errorState = useSelector( ( state = {} ) => state.error );
-
     const [ register , { data , loading , error } ] = useMutation(REGISTER_MUTATION , {
-
             onCompleted:( { registerUser } )=>{
-
                 history.push(`/login/?username=${registerUser.username}`);
-
             } ,
-
             onError:(error)=>{ console.log(error); }
-
     })
-
     let userNameRef , passwordRef , email;  
- 
     const onRegister = ()=>{
-
         register({
 
             variables:{
@@ -50,25 +40,15 @@ const RegisterPage = ( props )=>{
                 }
             }
         })
-
     }
-
     return <GeneralWrapper>
-
     <TitleImage text = "Register to the Group-Chat" />
-
-        { loading ? <h6> Registering... </h6> : null }
-        
+        { loading ? <h6> Registering... </h6> : null }  
         { error ? <h5 style={{ color:"red"} } > { errorState.errorType + " " + errorState.message } </h5> : null}
-
         <InputBox placeholder="Username" ref={ ref => userNameRef = ref } />
-
         <InputBox placeholder="email" ref={ ref => email = ref }  />
-
-        <InputBox placeholder="Password" ref={ ref => passwordRef = ref } type="password" />
-        
+        <InputBox placeholder="Password" ref={ ref => passwordRef = ref } type="password" /> 
         <button onClick={ ()=>{ onRegister(); } } > REGISTER </button>
-
         <Link to={{
             pathname:"/login"
         }}  style ={{

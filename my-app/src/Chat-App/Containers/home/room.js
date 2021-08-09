@@ -1,4 +1,4 @@
-import React, {useEffect,useState} from 'react'
+import React, {useEffect,useState,useRef} from 'react'
 import { useQuery , useMutation } from '@apollo/client'
 import { GET_CHAT_ROOM_QUERY } from '../../GraphqQL/Queries/ChatRoomQuery'
 import {  
@@ -61,7 +61,6 @@ const TextPart = styled.div`
     display:flex;
     justify-content:space-between;
     width:100%;
-    flex:0.06;
 `
 
 const ChatTextInput = styled.input`
@@ -245,14 +244,16 @@ const RepliedMessageTextBubble = styled.div`
     margin-right:4px;
     margin-left:4px;
     font-size:14px;
-`
-
-
-
-
-
-    
+`    
 const memberColors = [ "#F8485E ", "#00C1D4", "DarkCyan", "DarkGoldenRod", "DarkBlue", "DarkRed", "DarkOrange", "Indigo" , "Purple" , "YellowGreen"];
+
+const usePrevious = (value) => {
+    const ref = useRef();
+    useEffect(() => {
+      ref.current = value;
+    });
+    return ref.current;
+}
 
 const Room = ({match})=>{
     const { data , loading , error , subscribeToMore } = useQuery(GET_CHAT_ROOM_QUERY,{
@@ -268,11 +269,15 @@ const Room = ({match})=>{
     const [ leaveRoom ] = useMutation(LEAVE_ROOM_MUTATION , {
         onCompleted:(data)=>{
             history.push('/main-page');
-        }
+        },
     });
     const currentUser = useSelector((state = {}) => state.user);
+    const prevMessagesLength = usePrevious(data?.getChatRoom.messages.length);
+    const currentMessagesLength = data?.getChatRoom.messages.length;
+
     const OnSendMessage = ()=>{
         if(chatText.value) {
+            setIsReplied(null);
             send({
                 variables:{
                         text:chatText.value || null,
@@ -313,7 +318,14 @@ const Room = ({match})=>{
         }
     },[])
 
-    console.log(data)
+    useEffect(()=>{
+        if(!loading) {
+            if(currentMessagesLength > prevMessagesLength ) { // this means a new messages added 
+                var chatBox = document.querySelector(".chatMessages"); 
+                chatBox.scrollTop = chatBox.scrollHeight; 
+            }
+        } 
+    },[currentMessagesLength]);
 
     useEffect(()=>{
         subscribeToMore({
@@ -326,16 +338,22 @@ const Room = ({match})=>{
                 const type = subscriptionData.data.message.actionType;
                 console.log(subscriptionData)
                 switch(type) {
-                    case 'SEND': 
-                        setTimeout(()=>{ var chat = document.querySelector(".chatMessages"); chat.scrollTo(0, 7000); },0)
+                    case 'SEND':           
                         var updatedData = Object.assign({},prev.getChatRoom,{
                             messages:prev.getChatRoom.messages.concat(subMessage)
                         })  // message type must be the same shape as prevmessagetype
                     break;  
                     case 'DELETE':
-                        var updatedData = Object.assign({},prev.getChatRoom,{
-                            messages:prev.getChatRoom.messages.filter((msg)=> msg._id != subMessage._id )
+                        var initialData = prev.getChatRoom.messages.filter((msg)=> msg._id != subMessage._id );
+                        console.log(initialData);
+                        var lastData  = initialData.map((msg)=>{
+                                if(msg.repliedMessage?._id == subMessage._id) {
+                                    return {...msg,repliedMessage:null}
+                                } else {
+                                    return msg;
+                                }
                         })
+                        var updatedData = Object.assign({},prev.getChatRoom,{ messages:lastData })
                     break;
                     case 'UPDATE':
                         setIsBeingUpdatedID(null);
@@ -387,10 +405,7 @@ const Room = ({match})=>{
         })
 
     },[])
-
     var chatText;
- 
-
     return <GeneralWrapper> 
 
             <LeaveGroup onClick={onLeaveRoom}>  

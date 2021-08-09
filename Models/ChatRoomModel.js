@@ -28,12 +28,7 @@ const ChatRoom = new mongoose.Schema({
         }
 
     ],
-
-    members:{
-        type:Array,
-        required:true
-    }
-
+    members:[mongoose.Schema.Types.ObjectId]
 })
 
 module.exports = mongoose.model( 'ChatRoom', ChatRoom );

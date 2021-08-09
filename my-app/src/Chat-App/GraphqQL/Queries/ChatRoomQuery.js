@@ -62,6 +62,7 @@ export const GET_CHAT_ROOM_QUERY = gql`
                 }
                 date
                 repliedMessage {
+                    _id
                     owner {
                         username
                         _id

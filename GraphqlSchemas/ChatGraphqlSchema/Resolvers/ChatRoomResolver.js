@@ -17,32 +17,22 @@ const chatRoomResolver = {
         } , 
 
         getOtherRooms:async (_,args, { user })=>{
-
             if(!user) {
                 throw new AuthenticationError("INVALID TOKEN");
             } else {
-
                 const rooms = await ChatRoom.find({host:{$ne:user._id}})
-                return rooms;
-                
+                return rooms; 
             }
         } ,
 
-
-        getChatRoom:async (_,args, { user } )=>{
-
+        getChatRoom:async (_,args, { user , context } )=>{
             if(!user) {
                 throw new AuthenticationError("INVALID TOKEN");
             } else {
-
                 const chatRoom = await ChatRoom.findById(args.roomID);
-
                 return chatRoom;
-                
             }
-        
         }
-
     },
 
     Mutation:{
