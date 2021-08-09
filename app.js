@@ -5,7 +5,6 @@ const path = require('path');
 const express = require('express');
 const { ApolloServer} = require('apollo-server-express');
 const {createServer} = require('http')
-const { execute, subscribe }=require('graphql');
 const _Url = process.env.DB_URL
 const PORT = process.env.PORT || 8000;
 
@@ -15,6 +14,7 @@ mongoose.connect(_Url,{ useUnifiedTopology: true,useNewUrlParser: true })
 .catch((err)=>console.log(err));
 const app = express();
 const ChatRoom = require('../chat-app/Models/ChatRoomModel');
+
 const disConnectTheUser = async (context)=>{
     const initialContext = await context.initPromise;
     const user = await jwt.verify(initialContext.token,'secret'); 
@@ -28,7 +28,7 @@ const apolloServer = new ApolloServer( { schema ,
             onConnect:(connectionParams, webSocket, context)=>{
                 return connectionParams;
             },
-            onDisconnect:async (websocket, context)=>{
+            onDisconnect:async (_,context)=>{
                 disConnectTheUser(context);
             }
     },
