@@ -24,7 +24,11 @@ const ChatRoom = new mongoose.Schema({
             text:String,
             owner:mongoose.Schema.Types.ObjectId,
             date:Date,
-            repliedMessage:mongoose.Schema.Types.ObjectId
+            repliedMessage:mongoose.Schema.Types.ObjectId,
+            isEdited:{
+                type:Boolean,
+                default:false
+            }
         }
 
     ],

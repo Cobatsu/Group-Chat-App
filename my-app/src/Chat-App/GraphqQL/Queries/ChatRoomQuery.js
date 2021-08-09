@@ -60,6 +60,7 @@ export const GET_CHAT_ROOM_QUERY = gql`
                     username
                     _id
                 }
+                isEdited
                 date
                 repliedMessage {
                     _id

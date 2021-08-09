@@ -94,6 +94,7 @@ const Messages = styled.ul`
  display:flex;
  flex-direction:column;
  list-style: none;
+ margin:0;
  padding:0;
  overflow:scroll;
  overflow-x: hidden;
@@ -116,6 +117,7 @@ const InnerMessage = styled.li`
  list-style: none;
  flex-direction:${ ({checkOwner})=> checkOwner ? 'row' : 'row-reverse'}; 
  justify-content:flex-end;
+ align-items:center;
  padding:8px 15px 8px 15px;
  border-radius:5px;
  box-sizing: border-box;
@@ -348,7 +350,7 @@ const Room = ({match})=>{
                         console.log(initialData);
                         var lastData  = initialData.map((msg)=>{
                                 if(msg.repliedMessage?._id == subMessage._id) {
-                                    return {...msg,repliedMessage:null}
+                                    return Object.assign({},msg,{repliedMessage:null})
                                 } else {
                                     return msg;
                                 }
@@ -360,7 +362,10 @@ const Room = ({match})=>{
                         var updatedData = Object.assign({},prev.getChatRoom,{
                             messages:prev.getChatRoom.messages.map(
                             (msg)=> { 
-                                return msg._id == subMessage._id ?  Object.assign({},msg,{text:subMessage.text}) : msg } )
+                                return msg._id == subMessage._id ?  
+                                Object.assign({},msg,{
+                                text:subMessage.text,
+                                isEdited:true }) : msg } )
                             })               
                     break;
                     default:
@@ -460,15 +465,15 @@ const Room = ({match})=>{
                                         return (
                                         
                                         <InnerMessage key={index} checkOwner={ msg.owner._id == currentUser._id } > {/* row-reverse also reverses the end and start property */}
+                                            {msg.isEdited  && <span style={{fontSize:12,color:'grey'}}> (edited) </span> }
                                             <TextInformationBubble memberColor = {memberColors[
                                                 data.getChatRoom.members.findIndex((m)=> m._id == msg.owner._id)
                                             ] || '#87A8A4'} >
                                                 <span style={{fontSize:12}} > <i  className="fas fa-user"/> {msg.owner.username}  </span>
-                                                <span style={{color:"#628395"}}>  {msg.date} </span>
+                                                <span style={{color:"#628395"}}>  {msg.date} </span>                                       
                                             </TextInformationBubble> 
                                             {
                                                 msg.repliedMessage &&  <RepliedMessageTextBubble>  
-
                                                     <RepliedMessageInfo color={memberColors[data?.getChatRoom.members.findIndex((m)=> m._id == msg.repliedMessage.owner._id)] || '#87A8A4'} style={{top:4,left:4}}>  
                                                         <span  style={{marginRight:3}}>
                                                             <i  className="fas fa-user"  style={{marginRight:3}}/>
@@ -487,13 +492,18 @@ const Room = ({match})=>{
                                             <TextBubble>  
                                                    {
                                                        isBeingUpdatedID ==  msg._id ?                                
-                                                       ( <UpdateText                                                  
-                                                            onKeyDown={(e)=>{
+                                                       ( <React.Fragment> 
+                                                           <UpdateText onKeyDown={(e)=>{
                                                                 if(e.key == "Enter") { 
                                                                     onUpdateMessage( msg._id , e.target.value )                                                                
                                                                 }   
+                                                                if(e.key == "Escape") {
+                                                                    setIsBeingUpdatedID(null)
+                                                                }
                                                             }}
-                                                             defaultValue = {msg.text} />                                                      
+                                                             defaultValue = {msg.text} /> 
+                                                            <span style={{fontSize:10}}> çıkmak için esc • kaydetmek için enter </span>  
+                                                        </React.Fragment>                                                   
                                                         ) : msg.text
                                                    } 
                                             </TextBubble>
@@ -534,7 +544,7 @@ const Room = ({match})=>{
                                         { isReplied?.text }
                             </ReplyText>
                             <ReplyCloseIcon onClick={()=>setIsReplied(null)}>
-                                       <i class="fas fa-times"></i>
+                                       <i className="fas fa-times"></i>
                             </ReplyCloseIcon>      
                     </ReplyWrapper>
 

@@ -79,54 +79,37 @@ const UserRooms = ( { timeToRefetch , setTimeToRefetch} )=>{
                 }
               
         },[timeToRefetch]);
-
         
         const joinRoom = (id,limit,memberLength)=>(e)=>{
- 
                 join({
-
                     variables:{
                         roomID:id,
                         limit,
                         memberLength
                      }
-
                })
-
         }
-
-
         return (
-
                 <Container>
-
                         <span style={{textAlign:"center"}}> My Rooms </span>
-
                         <Rooms>
                                 {
+                                        loading ? <span> Fetching... </span> : 
+                                        error ?   <span> {storeError.errorType + " " + storeError.message} </span> : 
+                                        data.getUserRooms.map((room)=>{
+                                                return (
+                                                        <Room 
+                                                         key={room._id} 
+                                                         room={room} 
+                                                         joinRoom={joinRoom}
+                                                         userRoom={true}
+                                                        />
 
-                                loading ? <span> Fetching... </span> : 
-                                error ?   <span> {storeError.errorType + " " + storeError.message} </span> : 
-                               
-                                data.getUserRooms.map((room)=>{
-
-                                        return (
-
-                                                <Room 
-                                                key={room._id} 
-                                                room={room} 
-                                                joinRoom={joinRoom}
-                                                userRoom={true}
-                                                />
-
-                                        )
-
-                                  })                
+                                                )
+                                        })                
                                 }
                         </Rooms>
-
                 </Container>
-
         )
 }
 

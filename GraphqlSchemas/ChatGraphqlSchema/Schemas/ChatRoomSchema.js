@@ -18,6 +18,7 @@ type Message {
     date:String
     actionType:String
     repliedMessage:Message
+    isEdited:Boolean
 }
 
 type RoomSubscripton {

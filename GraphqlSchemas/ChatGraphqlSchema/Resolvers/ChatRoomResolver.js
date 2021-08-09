@@ -46,7 +46,7 @@ const chatRoomResolver = {
                 const newChatRoom = new ChatRoom({
                     ...room,
                     host:user._id,
-                    memebers:[],
+                    members:[],
                     messages:[],
                 })
       
@@ -54,93 +54,54 @@ const chatRoomResolver = {
     
                 return createdRoom;
             }
-
-           
-        } , 
-
+        } ,
         joinRoom: async (_, { roomID } , { user } )=>{
-        
                 if(!user) {
-
                    throw new AuthenticationError("INVALID TOKEN"); 
-
                 } else {
-
                         const findRoom = await ChatRoom.findById(roomID);
-
                         if( findRoom.members.length < findRoom.limit ) {
-
                             if( findRoom.members.includes(user._id) ) {
-
                                 throw new ForbiddenError("You Already In Room!"); 
-    
                             }
-    
                             pubsub.publish('ROOM',{
-    
                                 room:{
                                     user,
                                     roomID,
                                     actionType:'JOIN'
                                 }
-    
                             });
-        
                             const updated = await  ChatRoom.findOneAndUpdate( { _id:roomID } , {$push: { members: user._id } } );
-        
                             return updated;
-
                         } else {
-
                             throw new ForbiddenError("Member Limit Is Reached"); 
-
                         }
-
                 }
-
         } ,
-
         leaveRoom: async (_, { roomID } , { user } )=>{
-
             if(!user) {
                 throw new AuthenticationError("INVALID TOKEN"); 
             } else {
-
                 const leftRoom = await ChatRoom.findOneAndUpdate({ _id:roomID} , {$pull:{ members:user._id }});
-             
                 pubsub.publish('ROOM',{
-    
                     room:{
                         user,
                         roomID,
                         actionType:'LEAVE'
                     }
-
                 });
-
                 return leftRoom
-            }
-            
+            }  
         } ,
-
         deleteMessage: async (_, { messageID , roomID } , { user })=>{
-
             if(!user) {
-
                 throw new AuthenticationError("INVALID TOKEN"); 
-
             } else {
-
-                const deleted = await ChatRoom.findById(roomID);
-                
+                const deleted = await ChatRoom.findById(roomID); 
                 const updatedData = deleted.messages.filter((msg)=>  msg._id != messageID )  
-
                 const deletedMessage = deleted.messages.find((msg)=> msg._id == messageID )
-
                 if( deletedMessage.owner != user._id ) {
-
                     throw new ForbiddenError("Forbidden!"); 
-
                 }
                 pubsub.publish('MESSAGE', {
                     message:{
@@ -153,10 +114,8 @@ const chatRoomResolver = {
                 await deleted.save(); // we can update data after using find function 
                 return deletedMessage;
             }
-
         },
         sendMessage: async (_, { roomID , text , repliedMessage } , { user } )=>{
-      
             if(!user) {
                 throw new AuthenticationError("INVALID TOKEN"); 
             } else {
@@ -164,7 +123,7 @@ const chatRoomResolver = {
                     date:new Date(),
                     text,
                     owner:user._id,
-                    repliedMessage: repliedMessage || null
+                    repliedMessage: repliedMessage || null,         
                 }}})
                 const updatedData = await ChatRoom.findById(roomID);
                 const lastMessage = updatedData.messages[updatedData.messages.length-1];
@@ -180,34 +139,36 @@ const chatRoomResolver = {
                 })
                 return lastMessage;
             }
-
         },
-
-        updateMessage: async (_, { messageID , updatedText , roomID } , { user } )=>{ 
+        updateMessage: async (_,{messageID,updatedText,roomID},{user})=>{ 
             
             if(!user) {
                 throw new AuthenticationError("INVALID TOKEN");  
             } else {
                 const room = await ChatRoom.findById(roomID);
                 const prevMessage = room.messages.find((msg)=> msg._id == messageID );
-                const updatedMessages = room.messages.map((msg)=> {
-                return msg._id == messageID ?  {
-                    ...msg._doc,
-                    text:updatedText }  : msg 
-               } )         
-                room.messages = updatedMessages;
-                pubsub.publish('MESSAGE',{
-                    message:{    
-                        _id:messageID,
-                        text:updatedText,
-                        date:prevMessage.date,
-                        owner:user,
-                        actionType:'UPDATE',
-                        roomID
-                    }
-                })
-                await room.save();
-                return room.messages.find((msg)=> msg._id == messageID );;
+                if(prevMessage.text != updatedText) {
+                    const updatedMessages = room.messages.map((msg)=> {
+                        return msg._id == messageID ?  {
+                            ...msg._doc,
+                            text:updatedText,
+                            isEdited:true }  : msg 
+                       } )         
+                        room.messages = updatedMessages;
+                        pubsub.publish('MESSAGE',{
+                            message:{    
+                                _id:messageID,
+                                text:updatedText,
+                                date:prevMessage.date,
+                                owner:user,
+                                actionType:'UPDATE',
+                                roomID
+                            }
+                        })
+                        await room.save();
+                        return room.messages.find((msg)=> msg._id == messageID );;
+                }
+        
             }
         }
     },
