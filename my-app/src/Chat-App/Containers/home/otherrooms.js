@@ -37,7 +37,8 @@ left:0;
 const OtherRooms = ()=>{
 
         const { data , loading , error , refetch } = useQuery(GET_OTHER_ROOMS_QUERY, {
-               fetchPolicy:"network-only"
+               fetchPolicy:"network-only",
+               notifyOnNetworkStatusChange:true
         }) 
         const history = useHistory();
         const [ join ]  = useMutation(JOIN_ROOM_MUTATION , {
@@ -66,7 +67,7 @@ const OtherRooms = ()=>{
                         </span>
                         <Rooms>
                                 {
-                                loading ? <span> Fetching... </span> : 
+                                loading ? <span> Rooms are loading... </span> : 
                                 error ?   <span> {storeError.errorType + " " + storeError.message} </span> :                  
                                 data.getOtherRooms.map((room)=>{ 
                                         return <Room 

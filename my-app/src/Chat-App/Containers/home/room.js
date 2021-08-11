@@ -338,7 +338,6 @@ const Room = ({match})=>{
             updateQuery:(prev, { subscriptionData })=>{
                 const subMessage = subscriptionData.data.message;
                 const type = subscriptionData.data.message.actionType;
-                console.log(subscriptionData)
                 switch(type) {
                     case 'SEND':           
                         var updatedData = Object.assign({},prev.getChatRoom,{
@@ -365,7 +364,7 @@ const Room = ({match})=>{
                                 return msg._id == subMessage._id ?  
                                 Object.assign({},msg,{
                                 text:subMessage.text,
-                                isEdited:true }) : msg } )
+                                isEdited:subMessage.isEdited }) : msg } )
                             })               
                     break;
                     default:
@@ -498,7 +497,7 @@ const Room = ({match})=>{
                                                                     onUpdateMessage( msg._id , e.target.value )                                                                
                                                                 }   
                                                                 if(e.key == "Escape") {
-                                                                    setIsBeingUpdatedID(null)
+                                                                    setIsBeingUpdatedID(false)
                                                                 }
                                                             }}
                                                              defaultValue = {msg.text} /> 

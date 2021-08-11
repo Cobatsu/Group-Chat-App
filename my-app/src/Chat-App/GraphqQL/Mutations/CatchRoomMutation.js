@@ -100,6 +100,7 @@ export const MESSAGE = gql`
             _id
             text
             date
+            isEdited
             owner {
                 username
                 _id

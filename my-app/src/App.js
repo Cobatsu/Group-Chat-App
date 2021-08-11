@@ -37,12 +37,13 @@ const wsLink = new WebSocketLink({
     reconnect: true,
     connectionParams:{
       token:localStorage.getItem('token'),
+      roomID:window.location.pathname.split('/')[window.location.pathname.split('/').length-1]
     },
     timeout: 60000,
   }
 });
 
-const initalState = { user:{} , error:{} }
+const initalState = {user:{},error:{}}
 
 const store = createStore(UserReducer,initalState);
 

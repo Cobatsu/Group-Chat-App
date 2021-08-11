@@ -15,17 +15,29 @@ mongoose.connect(_Url,{ useUnifiedTopology: true,useNewUrlParser: true })
 const app = express();
 const ChatRoom = require('../chat-app/Models/ChatRoomModel');
 
+const getTokenPayload = (token)=>{
+    const payload = jwt.verify(token,'secret'); 
+    return payload;
+}
+
 const disConnectTheUser = async (context)=>{
     const initialContext = await context.initPromise;
-    const user = await jwt.verify(initialContext.token,'secret'); 
+    const user = getTokenPayload(initialContext.token); 
     const userID = mongoose.Types.ObjectId(user._id);
-    await ChatRoom.findOneAndUpdate({members:userID} , {$pull:{ members:userID }});   
+    await ChatRoom.findOneAndUpdate({members:userID},{$pull:{members:userID}});   
+}
+
+const connectTheUser = async (context)=>{
+    const user = getTokenPayload(context.token); 
+    const userID = mongoose.Types.ObjectId(user._id);
+    await ChatRoom.findOneAndUpdate({_id:context.roomID},{$push:{members:userID}});  
 }
 
 const apolloServer = new ApolloServer( { schema , 
     subscriptions: {
             path: "/subscriptions",
             onConnect:(connectionParams, webSocket, context)=>{
+                connectTheUser(connectionParams);   
                 return connectionParams;
             },
             onDisconnect:async (_,context)=>{
@@ -37,12 +49,10 @@ const apolloServer = new ApolloServer( { schema ,
             var token = connection.context.token
         } else { var token = req.headers['authorization'].split(' ')[1]; }
         try {
-            const user = await jwt.verify(token,'secret'); 
-            return { 
-                user 
-            }
+            const user = getTokenPayload(token); 
+            return {user}
         } catch {
-            return { user:null }
+            return {user:null}
         }
 }} );
 

@@ -141,13 +141,11 @@ const chatRoomResolver = {
             }
         },
         updateMessage: async (_,{messageID,updatedText,roomID},{user})=>{ 
-            
             if(!user) {
                 throw new AuthenticationError("INVALID TOKEN");  
             } else {
                 const room = await ChatRoom.findById(roomID);
-                const prevMessage = room.messages.find((msg)=> msg._id == messageID );
-                if(prevMessage.text != updatedText) {
+                const prevMessage = room.messages.find((msg)=> msg._id == messageID );     
                     const updatedMessages = room.messages.map((msg)=> {
                         return msg._id == messageID ?  {
                             ...msg._doc,
@@ -162,13 +160,12 @@ const chatRoomResolver = {
                                 date:prevMessage.date,
                                 owner:user,
                                 actionType:'UPDATE',
+                                isEdited:prevMessage.text != updatedText ? true : false,
                                 roomID
                             }
                         })
                         await room.save();
-                        return room.messages.find((msg)=> msg._id == messageID );;
-                }
-        
+                        return room.messages.find((msg)=> msg._id == messageID ); //updatedMessage
             }
         }
     },
