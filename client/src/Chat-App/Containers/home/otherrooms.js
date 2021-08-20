@@ -35,7 +35,6 @@ const Refresh = styled.div`
 const OtherRooms = () => {
   const { data, loading, error, refetch } = useQuery(GET_OTHER_ROOMS_QUERY, {
     fetchPolicy: "network-only",
-    notifyOnNetworkStatusChange: true,
   });
   const history = useHistory();
   const [join] = useMutation(JOIN_ROOM_MUTATION, {
@@ -54,6 +53,7 @@ const OtherRooms = () => {
       },
     });
   };
+
   return (
     <Container>
       <span style={{ textAlign: "center", position: "relative" }}>

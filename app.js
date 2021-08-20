@@ -59,6 +59,7 @@ const apolloServer = new ApolloServer({
     } else {
       var token = req.headers.authorization.split(" ")[1];
     }
+
     try {
       const user = getTokenPayload(token);
       return { user };

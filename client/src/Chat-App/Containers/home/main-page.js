@@ -191,7 +191,7 @@ const MainPage = (props) => {
               </span>
               <Button onClick={createRoom}>
                 {" "}
-                Createa Room <i className="fas fa-plus"></i>{" "}
+                Create Room <i className="fas fa-plus"></i>{" "}
               </Button>
             </InnerInputWrapper>
 

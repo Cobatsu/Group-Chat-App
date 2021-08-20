@@ -65,14 +65,12 @@ const errorLink = onError(({ graphQLErrors, networkError, operation }) => {
   // only runs when server respones
 
   let errorType, message;
-  let { history } = operation.getContext();
-
   if (graphQLErrors) {
     for (const el of graphQLErrors) {
       switch (el.extensions.code) {
         case "UNAUTHENTICATED":
           store.dispatch(logout());
-          history.push("/login");
+          window.location.href = "/login";
           break;
         default:
           break;

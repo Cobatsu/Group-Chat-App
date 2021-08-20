@@ -43,7 +43,6 @@ const InnerRooms = styled.div`
 const UserRooms = ({ timeToRefetch, setTimeToRefetch }) => {
   const { data, loading, error, refetch } = useQuery(GET_USER_ROOMS_QUERY, {
     fetchPolicy: "network-only",
-    notifyOnNetworkStatusChange: true,
   });
 
   const history = useHistory();

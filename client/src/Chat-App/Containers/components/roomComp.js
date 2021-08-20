@@ -36,13 +36,11 @@ export const Room = ({ room, joinRoom, userRoom }) => {
   const targetRoom = currentUser.lastTimeSee?.find((visitedRoom) => {
     return visitedRoom.roomID == room._id;
   });
-
   let numberOfUnreadMessages = !targetRoom
     ? room.messages.length
     : room.messages.reduce((prev, curr) => {
         const messageSentDate = new Date(curr.date.split("-")[1]).getTime();
         const lastDateSeen = new Date(+targetRoom.time).getTime();
-
         if (messageSentDate > lastDateSeen) {
           return ++prev;
         } else {

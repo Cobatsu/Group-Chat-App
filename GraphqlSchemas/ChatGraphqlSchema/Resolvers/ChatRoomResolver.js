@@ -14,7 +14,12 @@ const chatRoomResolver = {
       if (!user) {
         throw new AuthenticationError("INVALID TOKEN");
       } else {
-        const rooms = await ChatRoom.find({ host: user._id });
+        let rooms;
+        try {
+          rooms = await ChatRoom.find({ host: user._id });
+        } catch (er) {
+          console.log(er, "ERRRRRROR");
+        }
         return rooms;
       }
     },
@@ -23,7 +28,12 @@ const chatRoomResolver = {
       if (!user) {
         throw new AuthenticationError("INVALID TOKEN");
       } else {
-        const rooms = await ChatRoom.find({ host: { $ne: user._id } });
+        let rooms;
+        try {
+          rooms = await ChatRoom.find({ host: { $ne: user._id } });
+        } catch (err) {
+          console.log(err, "ERRRRRROR");
+        }
         return rooms;
       }
     },
@@ -96,7 +106,6 @@ const chatRoomResolver = {
         const isRoomAlreadyPresent = currentUser.lastTimeSee.find((el) => {
           return el.roomID == roomID;
         });
-        console.log(currentUser);
         if (isRoomAlreadyPresent) {
           await User.findOneAndUpdate(
             { "lastTimeSee.roomID": roomID },

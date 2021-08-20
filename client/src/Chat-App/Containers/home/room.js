@@ -324,6 +324,7 @@ const Room = ({ match, history }) => {
   useEffect(() => {
     // we can handle user's status in room by using unmount function provided by useffect !
     return () => {
+      console.log("helloooooooo");
       onLeaveRoom();
     };
   }, []);
@@ -358,7 +359,6 @@ const Room = ({ match, history }) => {
             var initialData = prev.getChatRoom.messages.filter(
               (msg) => msg._id != subMessage._id
             );
-            console.log(initialData);
             var lastData = initialData.map((msg) => {
               if (msg.repliedMessage?._id == subMessage._id) {
                 return Object.assign({}, msg, { repliedMessage: null });
@@ -642,7 +642,7 @@ const Room = ({ match, history }) => {
             <i className="fas fa-user" />
             <span style={{ marginLeft: 4 }}>{isReplied?.owner.username}</span>
             <span style={{ marginLeft: 8, color: "#628395" }}>
-              {isReplied?.date}
+              {isReplied?.date.split("-")[0]}
             </span>
           </RepliedMessageInfo2>
           <ReplyText>{isReplied?.text}</ReplyText>

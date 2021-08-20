@@ -1,22 +1,33 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { useLazyQuery } from "@apollo/client";
 import { useHistory } from "react-router-dom";
 import { CHECK_TOKEN_QUERY } from "../GraphqQL/Queries/AccountQuery";
 import { useDispatch } from "react-redux";
 import { Route } from "react-router-dom";
 
+const usePrevious = (value) => {
+  const ref = useRef();
+  useEffect(() => {
+    ref.current = value;
+  });
+  return ref.current;
+};
+
 const PrivateRoute = ({ component: Component, ...rest }) => {
   let history = useHistory();
   let dispatch = useDispatch();
-
-  let [check, { loading, data }] = useLazyQuery(CHECK_TOKEN_QUERY, {
+  let [loadingC, setLoadingC] = useState(true);
+  let prevPath = usePrevious(rest.path);
+  let currentPath = rest.path;
+  let [check, { data }] = useLazyQuery(CHECK_TOKEN_QUERY, {
     context: {
       history,
     },
-
+    notifyOnNetworkStatusChange: true,
     fetchPolicy: "network-only",
 
     onCompleted: ({ checkToken }) => {
+      setLoadingC(false);
       dispatch({
         type: "SET_USER",
         payload: checkToken,
@@ -25,14 +36,16 @@ const PrivateRoute = ({ component: Component, ...rest }) => {
   });
 
   useEffect(() => {
-    check();
-  }, []);
+    check(); // we always get the new fresh user data
+  }, [currentPath]);
 
   return (
     <Route
       {...rest}
       component={(props) =>
-        !loading && data ? <Component {...props} /> : null
+        !loadingC && data && prevPath == currentPath ? (
+          <Component {...props} />
+        ) : null
       }
     />
   );
