@@ -1,0 +1,6 @@
+{
+    "prettier.jsxSingleQuote": true,
+    "editor.insertSpaces": false,
+    "editor.tabSize": 3,
+    "javascript.format.insertSpaceAfterOpeningAndBeforeClosingJsxExpressionBraces": true
+}
