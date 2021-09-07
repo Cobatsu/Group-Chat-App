@@ -6,13 +6,11 @@ const express = require("express");
 const {ApolloServer} = require("apollo-server-express");
 const {createServer} = require("http");
 const schema = require("./GraphqlSchemas/ChatGraphqlSchema/index");
-
-// eslint-disable-next-line no-underscore-dangle
+require("dotenv").config();
 const _Url = process.env.DB_URL;
 const PORT = process.env.PORT || 8000;
 
-require("dotenv").config();
-
+console.log("🚀 Server IS ready");
 mongoose
  .connect(_Url, {useUnifiedTopology: true, useNewUrlParser: true})
  .then(() => console.log("connected to DB"))
@@ -51,10 +49,11 @@ const apolloServer = new ApolloServer({
   },
  },
  context: async ({req, connection}) => {
+  var token;
   if (connection) {
-   var {token} = connection.context;
+   token = connection.context.token;
   } else {
-   var token = req.headers.authorization.split(" ")[1];
+   token = req.headers.authorization.split(" ")[1];
   }
 
   try {

@@ -3,6 +3,7 @@ import {useSubscription} from "@apollo/client";
 import styled from "styled-components";
 import {MEMBER_JOINED_ROOM} from "../../GraphqQL/Mutations/CatchRoomMutation";
 import {useSelector} from "react-redux";
+import {MESSAGE} from "../../GraphqQL/Mutations/CatchRoomMutation";
 
 const InnerRooms = styled.div`
  display: flex;
@@ -20,7 +21,9 @@ export const Room = ({room, joinRoom, userRoom}) => {
  // it iss so logical to set useSubscription in every room component
 
  const [members, setMembers] = useState(room.members);
- const {data} = useSubscription(MEMBER_JOINED_ROOM, {
+ const [messages, setMessages] = useState(room.messages);
+
+ const joinSubs = useSubscription(MEMBER_JOINED_ROOM, {
   variables: {
    roomID: room._id,
   },
@@ -34,13 +37,24 @@ export const Room = ({room, joinRoom, userRoom}) => {
    }
   },
  });
+ const messageSubs = useSubscription(MESSAGE, {
+  variables: {
+   roomID: room._id,
+  },
+  onSubscriptionData: ({subscriptionData}) => {
+   if (subscriptionData.data.message.actionType == "SEND") {
+    setMessages(prev => prev.concat(subscriptionData.data.message));
+   }
+  },
+ });
+
  const currentUser = useSelector((state = {}) => state.user);
  const targetRoom = currentUser.lastTimeSee?.find(visitedRoom => {
   return visitedRoom.roomID == room._id;
  });
  let numberOfUnreadMessages = !targetRoom
-  ? room.messages.length
-  : room.messages.reduce((prev, curr) => {
+  ? messages.length
+  : messages.reduce((prev, curr) => {
      const messageSentDate = new Date(curr.date.split("-")[1]).getTime();
      const lastDateSeen = new Date(+targetRoom.time).getTime();
      console.log(lastDateSeen + " " + messageSentDate);
@@ -112,8 +126,9 @@ export const Room = ({room, joinRoom, userRoom}) => {
    {numberOfUnreadMessages > 0 && (
     <span
      style={{
-      background: "#082032",
-      padding: "5px 7px",
+      background: "#FF6767",
+      width: 20,
+      height: 20,
       borderRadius: "50%",
       color: "white",
       marginLeft: 10,

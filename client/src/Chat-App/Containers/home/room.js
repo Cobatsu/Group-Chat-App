@@ -324,7 +324,6 @@ const Room = ({match, history}) => {
  useEffect(() => {
   // we can handle user's status in room by using unmount function provided by useffect !
   return () => {
-   console.log("helloooooooo");
    onLeaveRoom();
   };
  }, []);
@@ -430,7 +429,8 @@ const Room = ({match, history}) => {
       fontSize: 14,
       marginLeft: 4,
      }}
-     className='fas fa-sign-out-alt'></i>
+     className='fas fa-sign-out-alt'
+    ></i>
    </LeaveGroup>
 
    <Members>
@@ -440,13 +440,15 @@ const Room = ({match, history}) => {
       fontSize: 13,
       fontWeight: "600",
       letterSpacing: 1,
-     }}>
+     }}
+    >
      GROUP MEMBERS
      <span
       style={{
        marginLeft: 5,
        fontWeight: 600,
-      }}>
+      }}
+     >
       {data && (
        <React.Fragment>
         {" "}
@@ -471,7 +473,8 @@ const Room = ({match, history}) => {
       listStyle: "none",
       width: "100%",
       marginTop: 30,
-     }}>
+     }}
+    >
      {data &&
       data.getChatRoom.members.map((member, index) => {
        return (
@@ -483,7 +486,8 @@ const Room = ({match, history}) => {
           fontSize: 17.5,
           alignItems: "center",
          }}
-         key={member._id}>
+         key={member._id}
+        >
          <i
           className='fas fa-user'
           style={{
@@ -495,7 +499,8 @@ const Room = ({match, history}) => {
           style={{
            marginLeft: 10,
            fontSize: 14,
-          }}>
+          }}
+         >
           {" "}
           {member.username}{" "}
          </span>
@@ -526,7 +531,8 @@ const Room = ({match, history}) => {
         return (
          <InnerMessage
           key={index}
-          checkOwner={msg.owner._id == currentUser._id}>
+          checkOwner={msg.owner._id == currentUser._id}
+         >
           {" "}
           {/* row-reverse also reverses the end and start property */}
           {msg.isEdited && (
@@ -534,7 +540,8 @@ const Room = ({match, history}) => {
             style={{
              fontSize: 12,
              color: "grey",
-            }}>
+            }}
+           >
             {" "}
             (edited){" "}
            </span>
@@ -544,7 +551,8 @@ const Room = ({match, history}) => {
             memberColors[
              data.getChatRoom.members.findIndex(m => m._id == msg.owner._id)
             ] || "#87A8A4"
-           }>
+           }
+          >
            <span style={{fontSize: 12}}>
             {" "}
             <i className='fas fa-user' /> {msg.owner.username}{" "}
@@ -564,7 +572,8 @@ const Room = ({match, history}) => {
              style={{
               top: 4,
               left: 4,
-             }}>
+             }}
+            >
              <span style={{marginRight: 3}}>
               <i className='fas fa-user' style={{marginRight: 3}} />{" "}
               {msg.repliedMessage.owner.username}{" "}
@@ -574,7 +583,8 @@ const Room = ({match, history}) => {
               style={{
                marginLeft: 3,
                color: "#628395",
-              }}>
+              }}
+             >
               {msg.repliedMessage.date.split("-")[0]}{" "}
              </span>
             </RepliedMessageInfo>
@@ -633,14 +643,16 @@ const Room = ({match, history}) => {
        memberColors[
         data?.getChatRoom.members.findIndex(m => m._id == isReplied?.owner._id)
        ] || "#87A8A4"
-      }>
+      }
+     >
       <i className='fas fa-user' />
       <span style={{marginLeft: 4}}>{isReplied?.owner.username}</span>
       <span
        style={{
         marginLeft: 8,
         color: "#628395",
-       }}>
+       }}
+      >
        {isReplied?.date.split("-")[0]}{" "}
       </span>
      </RepliedMessageInfo2>

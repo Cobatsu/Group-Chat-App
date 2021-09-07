@@ -1,13 +1,10 @@
 import React, {useEffect} from "react";
 import styled from "styled-components";
-import {useSelector, useDispatch} from "react-redux";
+import {useSelector} from "react-redux";
 import {useHistory} from "react-router-dom";
-import {useQuery, NetworkStatus, useMutation} from "@apollo/client";
+import {useQuery, useMutation} from "@apollo/client";
 import {GET_USER_ROOMS_QUERY} from "../../GraphqQL/Queries/ChatRoomQuery";
-import {
- JOIN_ROOM_MUTATION,
- MEMBER_JOINED_ROOM,
-} from "../../GraphqQL/Mutations/CatchRoomMutation";
+import {JOIN_ROOM_MUTATION} from "../../GraphqQL/Mutations/CatchRoomMutation";
 import {Room} from "../components/roomComp";
 
 const Container = styled.div`
@@ -27,17 +24,6 @@ const Rooms = styled.div`
  display: flex;
  flex-direction: column;
  margin-top: 25px;
-`;
-const InnerRooms = styled.div`
- display: flex;
- justify-content: space-between;
- padding: 10px;
- align-items: center;
- &:hover {
-  box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px,
-   rgba(60, 64, 67, 0.15) 0px 1px 3px 1px;
-  cursor: pointer;
- }
 `;
 
 const UserRooms = ({timeToRefetch, setTimeToRefetch}) => {

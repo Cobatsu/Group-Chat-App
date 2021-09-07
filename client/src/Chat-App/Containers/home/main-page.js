@@ -8,238 +8,217 @@ import {logout} from "../../Actions/action"; // import RoomQuery from './roomQue
 import {useMutation} from "@apollo/client";
 import {CREATE_ROOM_MUTATION} from "../../GraphqQL/Mutations/CatchRoomMutation";
 
-const GeneralWrapper = styled.div `
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
-  height: 100%;
-  width: 88%;
-  margin: 0 auto;
+const GeneralWrapper = styled.div`
+ display: flex;
+ justify-content: space-around;
+ align-items: center;
+ height: 100%;
+ width: 88%;
+ margin: 0 auto;
 `;
 
-const InnerDiv = styled.div `
-  height: 500px;
-  box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 6px -1px,
-    rgba(0, 0, 0, 0.06) 0px 2px 4px -1px;
-  flex: 0.75;
-  display: flex;
-  justify-content: space-evenly;
-  align-items: center;
-  box-sizing: border-box;
-  padding: 10px;
+const InnerDiv = styled.div`
+ height: 500px;
+ box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 6px -1px,
+  rgba(0, 0, 0, 0.06) 0px 2px 4px -1px;
+ flex: 0.75;
+ display: flex;
+ justify-content: space-evenly;
+ align-items: center;
+ box-sizing: border-box;
+ padding: 10px;
 `;
 
-const LogOut = styled.div `
-  position: fixed;
-  height: 40px;
-  width: 100px;
-  top: 10px;
-  left: 10px;
-  box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 6px -1px,
-    rgba(0, 0, 0, 0.06) 0px 2px 4px -1px;
-  &:hover {
-    cursor: pointer;
-    background: blue;
-    color: white;
-    transition: 100ms;
-  }
-  display: flex;
-  align-items: center;
-  justify-content: center;
-`;
-
-const UserInformation = styled.div `
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  width: 70%;
-`;
-const Innerbuttons = styled.div `
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  width: 100%;
-  margin-top: 30px;
-`;
-
-const Profile = styled.div `
-  box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 6px -1px,
-    rgba(0, 0, 0, 0.06) 0px 2px 4px -1px;
-  height: 500px;
-  flex: 0.2;
-  display: flex;
-  flex-direction: column;
-  border-radius: 8px;
-  align-items: center;
-`;
-const TextSpan = styled.span `
-  font-size: 13px;
-  margin: 3px;
-`;
-const Button = styled.button `
-  border: none;
-  padding: 10px;
-  width: 100%;
-  margin-top: 15px;
-  display: flex;
-  justify-content: space-around;
+const LogOut = styled.div`
+ position: fixed;
+ height: 40px;
+ width: 100px;
+ top: 10px;
+ left: 10px;
+ box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 6px -1px,
+  rgba(0, 0, 0, 0.06) 0px 2px 4px -1px;
+ &:hover {
   cursor: pointer;
-  &:hover {
-    box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 6px -1px,
-      rgba(0, 0, 0, 0.06) 0px 2px 4px -1px;
-  }
-`;
-const InnerInputWrapper = styled.div `
-  display: flex;
-  flex-direction: column;
-  width: 80%;
-  font-size: 14px;
-  margin-top: 20px;
+  background: blue;
+  color: white;
+  transition: 100ms;
+ }
+ display: flex;
+ align-items: center;
+ justify-content: center;
 `;
 
-const MainPage = (props) => {
-    const currentUser = useSelector((state = {}) => state.user || {});
-    const [create, {
-            error
-        }
-    ] = useMutation(CREATE_ROOM_MUTATION, {
-        onError: (error) => {
-            console.log(error);
-        }
-    });
+const UserInformation = styled.div`
+ display: flex;
+ flex-direction: column;
+ align-items: flex-start;
+ width: 70%;
+`;
+const Innerbuttons = styled.div`
+ display: flex;
+ flex-direction: column;
+ align-items: center;
+ width: 100%;
+ margin-top: 30px;
+`;
 
-    const dispatch = useDispatch();
-    const history = useHistory();
-    const storeError = useSelector((state = {}) => state.error);
-    const [timeToRefetch, setTimeToRefetch] = useState(false);
+const Profile = styled.div`
+ box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 6px -1px,
+  rgba(0, 0, 0, 0.06) 0px 2px 4px -1px;
+ height: 500px;
+ flex: 0.2;
+ display: flex;
+ flex-direction: column;
+ border-radius: 8px;
+ align-items: center;
+`;
+const TextSpan = styled.span`
+ font-size: 13px;
+ margin: 3px;
+`;
+const Button = styled.button`
+ border: none;
+ padding: 10px;
+ width: 100%;
+ margin-top: 15px;
+ display: flex;
+ justify-content: space-around;
+ cursor: pointer;
+ &:hover {
+  box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 6px -1px,
+   rgba(0, 0, 0, 0.06) 0px 2px 4px -1px;
+ }
+`;
+const InnerInputWrapper = styled.div`
+ display: flex;
+ flex-direction: column;
+ width: 80%;
+ font-size: 14px;
+ margin-top: 20px;
+`;
 
+const MainPage = props => {
+ const currentUser = useSelector((state = {}) => state.user || {});
+ const [create, {error}] = useMutation(CREATE_ROOM_MUTATION, {
+  onError: error => {
+   console.log(error);
+  },
+ });
 
-    let limit,
-        title;
+ const dispatch = useDispatch();
+ const history = useHistory();
+ const storeError = useSelector((state = {}) => state.error);
+ const [timeToRefetch, setTimeToRefetch] = useState(false);
 
-    const onLogout = () => {
-        localStorage.removeItem("token");
-        dispatch(logout());
-        history.push("/login");
-    };
+ let limit, title;
 
-    const createRoom = () => {
-        create({
-            variables: {
-                room: {
-                    title: title.value.toLowerCase() || null,
-                    limit: parseInt(limit.value) || null
-                }
-            }
-        }).then(() => {
-            setTimeToRefetch(true);
-        });
-    };
+ const onLogout = () => {
+  localStorage.removeItem("token");
+  dispatch(logout());
+  history.push("/login");
+ };
 
-    return (
-        <React.Fragment>
-            <GeneralWrapper>
-                <LogOut onClick={onLogout}>LOG OUT</LogOut>
+ const createRoom = () => {
+  create({
+   variables: {
+    room: {
+     title: title.value.toLowerCase() || null,
+     limit: parseInt(limit.value) || null,
+    },
+   },
+  }).then(() => {
+   setTimeToRefetch(true);
+  });
+ };
 
-                <Profile>
-                    <img src="/userpng.png" width="60%"
-                        style={
-                            {
-                                marginBottom: 20,
-                                marginTop: 20
-                            }
-                        }/>
+ return (
+  <React.Fragment>
+   <GeneralWrapper>
+    <LogOut onClick={onLogout}>LOG OUT</LogOut>
 
-                    <UserInformation>
-                        <TextSpan>
-                            username : {
-                            currentUser.username
-                        } </TextSpan>
-                        <TextSpan>
-                            email : {
-                            currentUser.email
-                        } </TextSpan>
-                    </UserInformation>
+    <Profile>
+     <img
+      src='/userpng.png'
+      width='60%'
+      style={{
+       marginBottom: 20,
+       marginTop: 20,
+      }}
+      alt={"user"}
+     />
 
-                    <Innerbuttons>
-                        <InnerInputWrapper>
-                            <div style={
-                                {
-                                    display: "flex",
-                                    justifyContent: "space-between",
-                                    width: "100%"
-                                }
-                            }>
-                                <span>
-                                    Title :</span>
-                                <input ref={
-                                        (ref) => (title = ref)
-                                    }
-                                    style={
-                                        {width: "50%"}
-                                    }
-                                    placeholder="title"/>
-                            </div>
+     <UserInformation>
+      <TextSpan>username : {currentUser.username} </TextSpan>
+      <TextSpan>email : {currentUser.email} </TextSpan>
+     </UserInformation>
 
-                            <div style={
-                                {
-                                    display: "flex",
-                                    marginTop: 6,
-                                    justifyContent: "space-between",
-                                    width: "100%"
-                                }
-                            }>
-                                <span>Max People :</span>
+     <Innerbuttons>
+      <InnerInputWrapper>
+       <div
+        style={{
+         display: "flex",
+         justifyContent: "space-between",
+         width: "100%",
+        }}
+       >
+        <span>Title :</span>
+        <input
+         ref={ref => (title = ref)}
+         style={{width: "50%"}}
+         placeholder='title'
+        />
+       </div>
 
-                                <select style={
-                                        {width: "100px"}
-                                    }
-                                    ref={
-                                        (ref) => (limit = ref)
-                                }>
-                                    {
-                                    Array(10).fill().map((_, index) => (
-                                        <option key={index}>
-                                            {
-                                            index + 1
-                                        } </option>
-                                    ))
-                                } </select>
-                            </div>
+       <div
+        style={{
+         display: "flex",
+         marginTop: 6,
+         justifyContent: "space-between",
+         width: "100%",
+        }}
+       >
+        <span>Max People :</span>
 
-                            <span style={
-                                {color: "red"}
-                            }>
-                                {" "}
-                                {
-                                error && storeError.errorType + " " + storeError.message
-                            }
-                                {" "} </span>
-                            <Button onClick={createRoom}>
-                                {" "}
-                                Create Room
-                                <i className="fas fa-plus"></i>
-                                {" "} </Button>
-                        </InnerInputWrapper>
+        <select style={{width: "100px"}} ref={ref => (limit = ref)}>
+         {Array(10)
+          .fill()
+          .map((_, index) => (
+           <option key={index}>{index + 1} </option>
+          ))}{" "}
+        </select>
+       </div>
 
-                        {/* <InnerInputWrapper>
+       <span style={{color: "red"}}>
+        {" "}
+        {error && storeError.errorType + " " + storeError.message}{" "}
+       </span>
+       <Button onClick={createRoom}>
+        {" "}
+        Create Room
+        <i className='fas fa-plus'></i>{" "}
+       </Button>
+      </InnerInputWrapper>
+      {/* <InnerInputWrapper>
 
                          
                             <input style={{width:'100%'}} placeholder="Search..."/>
 
                             <Button onClick={createRoom}> Search Room  <i className="fas fa-search"></i> </Button>
 
-                    </InnerInputWrapper> */} </Innerbuttons>
-                </Profile>
+                    </InnerInputWrapper> */}{" "}
+     </Innerbuttons>
+    </Profile>
 
-                <InnerDiv>
-                    <UserRooms timeToRefetch={timeToRefetch}
-                        setTimeToRefetch={setTimeToRefetch}/>
-                    <OtherRooms/>
-                </InnerDiv>
-            </GeneralWrapper>
-        </React.Fragment>
-    );
+    <InnerDiv>
+     <UserRooms
+      timeToRefetch={timeToRefetch}
+      setTimeToRefetch={setTimeToRefetch}
+     />
+     <OtherRooms />
+    </InnerDiv>
+   </GeneralWrapper>
+  </React.Fragment>
+ );
 };
 
 export default MainPage;

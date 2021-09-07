@@ -22,12 +22,14 @@
     ],
     "rules": {
         "no-unused-vars":"warn",
-        "no-console":"off",
         "func-names":"off",
         "object-shorthand":"off",
         "class-methods-use-this":"off",
         "default-case":"off",
         "vars-on-top":"off",
-        
+        "no-console":"off",
+        "no-underscore-dangle":"off",
+        "no-var":"off"
+                
     }
 }

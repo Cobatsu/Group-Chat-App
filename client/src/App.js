@@ -31,7 +31,7 @@ const httpTerminatingLink = new HttpLink({
 
 const wsLink = new WebSocketLink({
  uri: "ws://localhost:8000/subscriptions",
- uri: "wss://groupchattappp.herokuapp.com/subscriptions",
+ //uri: "wss://groupchattappp.herokuapp.com/subscriptions",
  options: {
   reconnect: true,
   connectionParams: {
