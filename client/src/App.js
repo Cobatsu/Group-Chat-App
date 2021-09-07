@@ -108,7 +108,7 @@ const middleWareLink = new ApolloLink((operation, forward) => {
 
  return forward(operation);
 });
-
+//
 export const client = new ApolloClient({
  link: from([middleWareLink, errorLink, splitLink]),
  cache: new InMemoryCache(),
