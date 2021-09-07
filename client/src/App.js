@@ -25,13 +25,13 @@ import { WebSocketLink } from "@apollo/client/link/ws";
 import { getMainDefinition } from "@apollo/client/utilities";
 
 const httpTerminatingLink = new HttpLink({
-  uri: "http://localhost:8000/graphql",
-  // uri:"https://groupchattappp.herokuapp.com/graphql"
+  //uri: "http://localhost:8000/graphql",
+  uri:"https://groupchattappp.herokuapp.com/graphql"
 });
 
 const wsLink = new WebSocketLink({
-  uri: "ws://localhost:8000/subscriptions",
-  // uri: "wss://groupchattappp.herokuapp.com/subscriptions",
+  //uri: "ws://localhost:8000/subscriptions",
+  uri: "wss://groupchattappp.herokuapp.com/subscriptions",
   options: {
     reconnect: true,
     connectionParams: {
