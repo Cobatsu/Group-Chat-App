@@ -18,6 +18,10 @@ const GeneralWrapper = styled.div`
 
 const InputBox = styled.input`
  margin-bottom: 10px;
+ border-radius: 7px;
+ padding: 10px;
+ border: solid 1.5px #d3d3d3;
+ width: 13%;
 `;
 
 const LoginPage = props => {
@@ -76,25 +80,27 @@ const LoginPage = props => {
     ref={ref => (passwordRef = ref)}
     type='password'
    />
-   <button
-    onClick={() => {
-     onLogin();
-    }}
-   >
-    {" "}
-    LOG IN{" "}
-   </button>
-   <Link
-    to={{pathname: "/register"}}
-    style={{
-     textDecoration: "none",
-     fontSize: 13,
-     margin: 5,
-    }}
-   >
-    {" "}
-    Go to Register !{" "}
-   </Link>
+   <div>
+    <button
+     onClick={() => {
+      onLogin();
+     }}
+    >
+     {" "}
+     LOG IN{" "}
+    </button>
+    <Link
+     to={{pathname: "/register"}}
+     style={{
+      textDecoration: "none",
+      fontSize: 13,
+      margin: 5,
+     }}
+    >
+     {" "}
+     Go to Register !{" "}
+    </Link>
+   </div>
   </GeneralWrapper>
  );
 };
