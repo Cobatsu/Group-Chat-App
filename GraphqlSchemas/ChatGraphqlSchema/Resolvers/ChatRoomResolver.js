@@ -108,7 +108,7 @@ const chatRoomResolver = {
     );
     if (isRoomAlreadyPresent) {
      await User.updateOne(
-      {"lastTimeSee.roomID": roomID},
+      {"lastTimeSee.roomID": roomID, _id: user._id},
       {
        $set: {
         "lastTimeSee.$.time": new Date(),
