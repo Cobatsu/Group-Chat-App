@@ -257,14 +257,17 @@ const usePrevious = value => {
 };
 
 const Room = ({match, history}) => {
- const {data, loading, subscribeToMore} = useQuery(GET_CHAT_ROOM_QUERY, {
-  variables: {
-   roomID: match.params.id,
-  },
-  onError: err => {
-   history.push("/main-page");
-  },
- });
+ const {data, loading, subscribeToMore, refetch} = useQuery(
+  GET_CHAT_ROOM_QUERY,
+  {
+   variables: {
+    roomID: match.params.id,
+   },
+   onError: err => {
+    history.push("/main-page");
+   },
+  }
+ );
  const [isBeingUpdatedID, setIsBeingUpdatedID] = useState(false);
  const [isReplied, setIsReplied] = useState();
  const [send, {loading: Loading}] = useMutation(SEND_MESSAGE_MUTATION);
@@ -297,6 +300,7 @@ const Room = ({match, history}) => {
   var chatBox = document.querySelector(".chatMessages");
   chatBox.scrollTop = chatBox.scrollHeight;
  };
+
  const onLeaveRoom = () => {
   leaveRoom({
    variables: {
@@ -321,12 +325,13 @@ const Room = ({match, history}) => {
    },
   });
  };
+
  useEffect(() => {
-  // we can handle user's status in room by using unmount function provided by useffect !
-  return () => {
-   onLeaveRoom();
-  };
- }, []);
+  if (data) {
+   console.log("asd");
+   refetch();
+  }
+ }, [match.url]);
  useEffect(() => {
   if (!loading) {
    scrollToBottom();
@@ -368,6 +373,7 @@ const Room = ({match, history}) => {
       var updatedData = Object.assign({}, prev.getChatRoom, {
        messages: lastData,
       });
+      console.log(updatedData);
       break;
      case "UPDATE":
       setIsBeingUpdatedID(null);
@@ -418,7 +424,13 @@ const Room = ({match, history}) => {
     return {getChatRoom: mergedData};
    },
   });
+
+  return () => {
+   onLeaveRoom();
+  };
  }, []);
+
+ console.log(data);
  var chatText;
  return (
   <GeneralWrapper>

@@ -57,7 +57,6 @@ export const Room = ({room, joinRoom, userRoom}) => {
   : messages.reduce((prev, curr) => {
      const messageSentDate = new Date(curr.date.split("-")[1]).getTime();
      const lastDateSeen = new Date(+targetRoom.time).getTime();
-     console.log(lastDateSeen + " " + messageSentDate);
      if (messageSentDate > lastDateSeen) {
       return ++prev;
      } else {

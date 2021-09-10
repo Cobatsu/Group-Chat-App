@@ -44,7 +44,7 @@ const apolloServer = new ApolloServer({
    connectTheUser(connectionParams);
    return connectionParams;
   },
-  onDisconnect: async (_, context) => {
+  onDisconnect: (_, context) => {
    disConnectTheUser(context);
   },
  },

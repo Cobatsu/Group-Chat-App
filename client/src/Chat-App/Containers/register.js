@@ -15,12 +15,45 @@ const GeneralWrapper = styled.div`
  width: 100%;
 `;
 
+const InnerWrapper = styled.div`
+ display: flex;
+ align-items: center;
+ flex-direction: column;
+`;
+
 const InputBox = styled.input`
  margin-bottom: 10px;
  border-radius: 7px;
  padding: 10px;
+ box-sizing: border-box;
+ width: 100%;
  border: solid 1.5px #d3d3d3;
- width: 13%;
+`;
+
+const SubmitButton = styled.button`
+ outline: none;
+ border: none;
+ padding: 12px 15px;
+ border-radius: 5px;
+ background: #7f03fc;
+ color: white;
+ &:hover {
+  cursor: pointer;
+ }
+`;
+
+const Form = styled.div`
+ display: flex;
+ flex-direction: column;
+ align-items: center;
+ width: 65%;
+`;
+
+const Status = styled.span`
+ color: ${props => (props.error ? "red" : "#7f03fc")};
+ font-weight: 600;
+ font-size: 14px;
+ margin-bottom: 18px;
 `;
 
 const RegisterPage = props => {
@@ -48,44 +81,53 @@ const RegisterPage = props => {
  };
  return (
   <GeneralWrapper>
-   <TitleImage text='Register to the Group-Chat' />
-   {loading ? <h6> Registering... </h6> : null}
-   {error ? (
-    <h5 style={{color: "red"}}>
-     {" "}
-     {errorState.errorType + " " + errorState.message}{" "}
-    </h5>
-   ) : null}
-   <InputBox placeholder='Username' ref={ref => (userNameRef = ref)} />
-   <InputBox placeholder='email' ref={ref => (email = ref)} />
-   <InputBox
-    placeholder='Password'
-    ref={ref => (passwordRef = ref)}
-    type='password'
-   />
-   <div>
-    <button
-     onClick={() => {
-      onRegister();
-     }}
-    >
-     {" "}
-     REGISTER{" "}
-    </button>
-    <Link
-     to={{
-      pathname: "/login",
-     }}
-     style={{
-      textDecoration: "none",
-      fontSize: 13,
-      margin: 5,
-     }}
-    >
-     {" "}
-     Go to Login !{" "}
-    </Link>
-   </div>
+   <InnerWrapper>
+    <TitleImage text='Register to the Group-Chat' />
+
+    {loading ? <Status> Registering... </Status> : null}
+    {error ? <Status error> Please Fill All Fields Correctly !</Status> : null}
+    <Form>
+     <InputBox placeholder='Username' ref={ref => (userNameRef = ref)} />
+     <InputBox placeholder='email' ref={ref => (email = ref)} />
+     <InputBox
+      placeholder='Password'
+      ref={ref => (passwordRef = ref)}
+      type='password'
+     />
+     <div
+      style={{
+       width: "100%",
+       display: "flex",
+       justifyContent: "space-between",
+       alignItems: "center",
+       marginTop: 7,
+      }}
+     >
+      <SubmitButton
+       onClick={() => {
+        onRegister();
+       }}
+      >
+       {" "}
+       REGISTER{" "}
+      </SubmitButton>
+      <Link
+       to={{
+        pathname: "/login",
+       }}
+       style={{
+        textDecoration: "none",
+        fontSize: 13,
+        color: "#5d00ba",
+        margin: 5,
+       }}
+      >
+       {" "}
+       Go to Login Page !{" "}
+      </Link>
+     </div>
+    </Form>
+   </InnerWrapper>
   </GeneralWrapper>
  );
 };

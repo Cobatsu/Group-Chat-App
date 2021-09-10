@@ -14,25 +14,59 @@ const GeneralWrapper = styled.div`
  flex-direction: column;
  height: 70%;
  width: 100%;
+ flex-shrink: 0;
+`;
+
+const InnerWrapper = styled.div`
+ display: flex;
+ align-items: center;
+ flex-direction: column;
+ flex-shrink: 0;
 `;
 
 const InputBox = styled.input`
  margin-bottom: 10px;
  border-radius: 7px;
  padding: 10px;
+ box-sizing: border-box;
+ width: 100%;
  border: solid 1.5px #d3d3d3;
- width: 13%;
+ flex-shrink: 0;
+`;
+
+const SubmitButton = styled.button`
+ outline: none;
+ border: none;
+ padding: 12px 15px;
+ border-radius: 5px;
+ background: #7f03fc;
+ flex-shrink: 0;
+ color: white;
+ &:hover {
+  cursor: pointer;
+ }
+`;
+
+const Form = styled.div`
+ display: flex;
+ flex-direction: column;
+ align-items: center;
+ width: 65%;
+ flex-shrink: 0;
+`;
+
+const Status = styled.span`
+ color: ${props => (props.error ? "red" : "#7f03fc")};
+ font-weight: 600;
+ font-size: 14px;
+ margin-bottom: 18px;
 `;
 
 const LoginPage = props => {
  const dispatch = useDispatch();
- const errorState = useSelector((state = {}) => state.error);
  const history = useHistory();
-
  const location = useLocation();
-
  const {username} = queryString.parse(location.search.slice(1));
-
  var userNameRef, passwordRef;
 
  const [login, {loading, error}] = useLazyQuery(LOGIN_QUERY, {
@@ -58,49 +92,60 @@ const LoginPage = props => {
 
  return (
   <GeneralWrapper>
-   <TitleImage text='Welcome To The Group-Chat !' />{" "}
-   {username ? (
-    <h5 style={{color: "green"}}>You Registered. Lets Sign In !</h5>
-   ) : null}
-   {loading ? (
-    <h6>Giriş Yapılıyor</h6>
-   ) : error ? (
-    <h5 style={{color: "red"}}>
-     {" "}
-     {errorState.errorType + " " + errorState.message}{" "}
-    </h5>
-   ) : null}
-   <InputBox
-    placeholder='Username'
-    ref={ref => (userNameRef = ref)}
-    value={username}
-   />
-   <InputBox
-    placeholder='Password'
-    ref={ref => (passwordRef = ref)}
-    type='password'
-   />
-   <div>
-    <button
-     onClick={() => {
-      onLogin();
-     }}
-    >
-     {" "}
-     LOG IN{" "}
-    </button>
-    <Link
-     to={{pathname: "/register"}}
-     style={{
-      textDecoration: "none",
-      fontSize: 13,
-      margin: 5,
-     }}
-    >
-     {" "}
-     Go to Register !{" "}
-    </Link>
-   </div>
+   <InnerWrapper>
+    <TitleImage text='Welcome To The Group-Chat !' />{" "}
+    {username && !loading && !error ? (
+     <Status style={{color: "#368B85"}}> You Registered. Lets Sign In !</Status>
+    ) : null}
+    {loading ? (
+     <Status>Redirecting...</Status>
+    ) : error ? (
+     <Status error> Username or Password Incorrect !</Status>
+    ) : null}
+    <Form>
+     <InputBox
+      placeholder='Username'
+      ref={ref => (userNameRef = ref)}
+      value={username}
+     />
+     <InputBox
+      placeholder='Password'
+      ref={ref => (passwordRef = ref)}
+      type='password'
+     />
+     <div
+      style={{
+       display: "flex",
+       width: "100%",
+       justifyContent: "space-between",
+       alignItems: "center",
+       marginTop: 7,
+      }}
+     >
+      <SubmitButton
+       onClick={() => {
+        onLogin();
+       }}
+      >
+       {" "}
+       LOG IN{" "}
+      </SubmitButton>
+      <Link
+       to={{pathname: "/register"}}
+       style={{
+        textDecoration: "none",
+        color: "#5d00ba",
+        fontSize: 13,
+        margin: 5,
+        flexShrink: 0,
+       }}
+      >
+       {" "}
+       Don't you have an account yet?{" "}
+      </Link>
+     </div>
+    </Form>
+   </InnerWrapper>
   </GeneralWrapper>
  );
 };
