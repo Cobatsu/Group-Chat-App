@@ -22,30 +22,30 @@ const getTokenPayload = token => {
  const payload = jwt.verify(token, "secret");
  return payload;
 };
-const disConnectTheUser = async context => {
- const initialContext = await context.initPromise;
- const user = getTokenPayload(initialContext.token);
- const userID = mongoose.Types.ObjectId(user._id);
- await ChatRoom.findOneAndUpdate({members: userID}, {$pull: {members: userID}});
-};
-const connectTheUser = async context => {
- const user = getTokenPayload(context.token);
- const userID = mongoose.Types.ObjectId(user._id);
- await ChatRoom.findOneAndUpdate(
-  {_id: context.roomID},
-  {$push: {members: userID}}
- );
-};
+// const disConnectTheUser = async context => {
+//  const initialContext = await context.initPromise;
+//  const user = getTokenPayload(initialContext.token);
+//  const userID = mongoose.Types.ObjectId(user._id);
+//  await ChatRoom.findOneAndUpdate({members: userID}, {$pull: {members: userID}});
+// };
+// const connectTheUser = async context => {
+//  const user = getTokenPayload(context.token);
+//  const userID = mongoose.Types.ObjectId(user._id);
+//  await ChatRoom.findOneAndUpdate(
+//   {_id: context.roomID},
+//   {$push: {members: userID}}
+//  );
+// };
 const apolloServer = new ApolloServer({
  schema,
  subscriptions: {
   path: "/subscriptions",
   onConnect: connectionParams => {
-   connectTheUser(connectionParams);
+   // connectTheUser(connectionParams)
    return connectionParams;
   },
   onDisconnect: (_, context) => {
-   disConnectTheUser(context);
+   // disConnectTheUser(context);
   },
  },
  context: async ({req, connection}) => {
