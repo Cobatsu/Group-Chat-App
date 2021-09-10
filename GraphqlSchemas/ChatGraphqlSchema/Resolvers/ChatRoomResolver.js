@@ -103,11 +103,11 @@ const chatRoomResolver = {
      {$pull: {members: user._id}}
     );
     const currentUser = await User.findOne({_id: user._id});
-    const isRoomAlreadyPresent = currentUser.lastTimeSee.find(el => {
-     return el.roomID == roomID;
-    });
+    const isRoomAlreadyPresent = currentUser.lastTimeSee.find(
+     el => el.roomID == roomID
+    );
     if (isRoomAlreadyPresent) {
-     await User.findOneAndUpdate(
+     await User.updateOne(
       {"lastTimeSee.roomID": roomID},
       {
        $set: {
@@ -117,7 +117,7 @@ const chatRoomResolver = {
       }
      );
     } else {
-     await User.findOneAndUpdate(
+     await User.updateOne(
       {_id: user._id},
       {
        $push: {
