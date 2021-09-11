@@ -37,7 +37,7 @@ const InputBox = styled.input`
 const SubmitButton = styled.button`
  outline: none;
  border: none;
- padding: 12px 15px;
+ padding: 8px 13px;
  border-radius: 5px;
  background: #7f03fc;
  flex-shrink: 0;
@@ -51,7 +51,7 @@ const Form = styled.div`
  display: flex;
  flex-direction: column;
  align-items: center;
- width: 65%;
+ width: 58%;
  flex-shrink: 0;
 `;
 
@@ -141,7 +141,7 @@ const LoginPage = props => {
        }}
       >
        {" "}
-       Don't you have an account yet?{" "}
+       Let's create an account !{" "}
       </Link>
      </div>
     </Form>

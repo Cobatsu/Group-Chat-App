@@ -33,7 +33,7 @@ const InputBox = styled.input`
 const SubmitButton = styled.button`
  outline: none;
  border: none;
- padding: 12px 15px;
+ padding: 8px 13px;
  border-radius: 5px;
  background: #7f03fc;
  color: white;
@@ -46,7 +46,7 @@ const Form = styled.div`
  display: flex;
  flex-direction: column;
  align-items: center;
- width: 65%;
+ width: 58%;
 `;
 
 const Status = styled.span`
@@ -82,7 +82,7 @@ const RegisterPage = props => {
  return (
   <GeneralWrapper>
    <InnerWrapper>
-    <TitleImage text='Register to the Group-Chat' />
+    <TitleImage text='Welcome To The Group-Chat !' />
 
     {loading ? <Status> Registering... </Status> : null}
     {error ? <Status error> Please Fill All Fields Correctly !</Status> : null}
