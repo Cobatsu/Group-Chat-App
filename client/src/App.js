@@ -28,7 +28,6 @@ const httpTerminatingLink = new HttpLink({
  //uri: "http://localhost:8000/graphql",
  uri: "https://groupchattappp.herokuapp.com/graphql",
 });
-//
 const wsLink = new WebSocketLink({
  //uri: "ws://localhost:8000/subscriptions",
  uri: "wss://groupchattappp.herokuapp.com/subscriptions",

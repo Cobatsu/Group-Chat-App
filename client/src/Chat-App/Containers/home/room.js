@@ -164,6 +164,7 @@ const UpdateText = styled.input`
  border: none;
  padding: 5px;
  color: white;
+ margin-bottom: 5px;
  background: #007580;
 `;
 // -------------------------------------------------------------------------------
@@ -197,7 +198,7 @@ const RepliedMessageInfo = styled.div`
  display: flex;
  width: 100%;
  justify-content: space-between;
- margin-bottom: 5px;
+ margin-bottom: 8px;
  color: ${({color}) => color};
  font-size: 11px;
 `;
@@ -500,6 +501,16 @@ const Room = ({match, history}) => {
          }}
          key={member._id}
         >
+         {data.getChatRoom.host._id == member._id && (
+          <i
+           className='fas fa-crown'
+           style={{
+            color: "#f0a500",
+            fontSize: 11,
+            marginRight: 4,
+           }}
+          />
+         )}
          <i
           className='fas fa-user'
           style={{
@@ -515,17 +526,7 @@ const Room = ({match, history}) => {
          >
           {" "}
           {member.username}{" "}
-         </span>
-         {data.getChatRoom.host._id == member._id && (
-          <i
-           className='fas fa-crown'
-           style={{
-            color: "#f0a500",
-            fontSize: 11,
-            marginLeft: 4,
-           }}
-          />
-         )}{" "}
+         </span>{" "}
         </li>
        );
       })}{" "}
@@ -565,7 +566,7 @@ const Room = ({match, history}) => {
             ] || "#87A8A4"
            }
           >
-           <span style={{fontSize: 12}}>
+           <span style={{fontSize: 12, marginBottom: 4}}>
             {" "}
             <i className='fas fa-user' /> {msg.owner.username}{" "}
            </span>
@@ -581,10 +582,6 @@ const Room = ({match, history}) => {
                )
               ] || "#87A8A4"
              }
-             style={{
-              top: 4,
-              left: 4,
-             }}
             >
              <span style={{marginRight: 3}}>
               <i className='fas fa-user' style={{marginRight: 3}} />{" "}
@@ -600,13 +597,13 @@ const Room = ({match, history}) => {
               {msg.repliedMessage.date.split("-")[0]}{" "}
              </span>
             </RepliedMessageInfo>
-            <span>{msg.repliedMessage.text}</span>
+            <span style={{fontSize: 10}}>{msg.repliedMessage.text}</span>
            </RepliedMessageTextBubble>
           )}
           <TextBubble>
            {" "}
            {isBeingUpdatedID == msg._id ? (
-            <React.Fragment>
+            <div style={{display: "flex", flexDirection: "column"}}>
              <UpdateText
               onKeyDown={e => {
                if (e.key == "Enter") {
@@ -622,7 +619,7 @@ const Room = ({match, history}) => {
               {" "}
               çıkmak için esc • kaydetmek için enter{" "}
              </span>
-            </React.Fragment>
+            </div>
            ) : (
             msg.text
            )}{" "}
