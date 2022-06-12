@@ -1,5 +1,5 @@
 # Group-Chat-App
-This application allows users to create rooms and have conversations. I built this application to improve my GraphQL and Apollo skills. I believe that I had many 
+This application allows users to create rooms and have conversations. I built this application to improve my GraphQL and Apollo skills. I believe that I gained many 
 valuable expreiences on the GraphQL-Apollo structure during development of this application. I used Graphql subscribers for socket connections. 
 
 * Users can create and delete rooms.
