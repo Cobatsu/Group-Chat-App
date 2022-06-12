@@ -4,7 +4,8 @@ valuable expreiences on the GraphQL-Apollo structure during development of this 
 
 * Users can create and delete rooms.
 * Users can create, delete, reply and update the messages.
-* Users can see unread messages.
+* Users can see the number of unread messages.
+
 
 # Images
 
