@@ -3,6 +3,7 @@ This application allows users to create rooms and have conversations. I built th
 valuable expreiences on the GraphQL-Apollo structure during development of this application. I used Graphql subscribers for socket connections. 
 
 * Users can create and delete rooms.
+* Users can join and leave rooms.
 * Users can create, delete, reply and update the messages.
 * Users can see the number of unread messages.
 
