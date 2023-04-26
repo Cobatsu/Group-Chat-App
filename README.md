@@ -10,7 +10,7 @@ Techs I used
 * MongoDB
 
 
-# What Can Users do ? 
+What Can Users do ? 
 
 * Users can create and delete rooms.
 * Users can join and leave rooms.
