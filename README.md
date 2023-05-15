@@ -1,7 +1,7 @@
 # Group-Chat App
 This application allows users to create rooms and have conversations. I built this application to improve my GraphQL and Apollo skills. I believe that I gained many valuable experiences regarding the GraphQL-Apollo structure during the development of this application.
 
-Tools and Techs I used in this project:
+Tools and techs I used in this project:
 ----------------------------
 
 * GarphQL
@@ -11,7 +11,7 @@ Tools and Techs I used in this project:
 * MongoDB
 
 
-What Can Users do ?
+What can users do ?
 ----------------------
 
 * Users can create and delete rooms.
