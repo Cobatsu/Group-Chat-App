@@ -22,7 +22,7 @@ What can users do ?
 
 Images
 --------------
-<img width="794" alt="login_chat" src="https://github.com/Cobatsu/Group-Chat-App/assets/56139934/37821faf-3a88-4810-a9de-888691d5e4d2">
+<img alt="login_chat" src="https://github.com/Cobatsu/Group-Chat-App/assets/56139934/37821faf-3a88-4810-a9de-888691d5e4d2">
 <img src="https://user-images.githubusercontent.com/56139934/115691910-c4445d00-a35e-11eb-911a-47f1329e4e35.PNG"  > 
 <img src="https://user-images.githubusercontent.com/56139934/115691969-d3c3a600-a35e-11eb-98e9-ca4441ec04d4.png" > 
 
