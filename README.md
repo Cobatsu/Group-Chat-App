@@ -4,7 +4,7 @@ This application allows users to create rooms and have conversations. I built th
 Tools and techs I used in this project:
 ----------------------------
 * JWT
-* GarphQL
+* GraphQL
 * Apollo Client/Server
 * React JS
 * Node JS
