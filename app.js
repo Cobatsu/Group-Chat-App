@@ -17,7 +17,7 @@ mongoose
  .catch(err => console.log(err));
 const app = express();
 const ChatRoom = require("./Models/ChatRoomModel");
-
+//
 const getTokenPayload = token => {
  const payload = jwt.verify(token, "secret");
  return payload;
