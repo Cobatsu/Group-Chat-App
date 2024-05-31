@@ -1,5 +1,4 @@
 # Group-Chat App
-I honed my GraphQL and Apollo skills while building this app that leverages web sockets, gaining invaluable experience in their structure and implementation.
 
 Tools and techs I used in this project:
 ----------------------------
