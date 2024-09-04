@@ -3,7 +3,7 @@
 Tools and techs I used in this project:
 ----------------------------
 * JWT
-* GraphQL
+* GraphQL subscriptions for real-time connection between server and client
 * Apollo Client/Server
 * React JS
 * Node JS
